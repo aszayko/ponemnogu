@@ -11,6 +11,7 @@ import {
 } from 'lucide';
 import { createMonthTracker } from '../components/monthTracker.js';
 import { createSidebar } from '../components/sidebar.js';
+import { createMobileCharacterHeader } from '../components/mobileCharacterHeader.js';
 import { createToastController } from '../components/toast.js';
 import {
   getAllDoneMessage,
@@ -68,6 +69,7 @@ function screenMarkup() {
   return `
     <div data-dashboard-sidebar></div>
     <section class="dashboard-main">
+      <div data-mobile-character></div>
       <header class="dashboard-header">
         <div class="dashboard-heading">
           <p class="eyebrow">Трекер привычек</p>
@@ -144,6 +146,7 @@ export function dashboardScreen() {
   page.append(toast.element);
 
   const sidebarMount = page.querySelector('[data-dashboard-sidebar]');
+  const mobileCharacterMount = page.querySelector('[data-mobile-character]');
   const monthTitle = page.querySelector('[data-month-title]');
   const content = page.querySelector('[data-dashboard-content]');
   const summaryMount = page.querySelector('[data-dashboard-summary]');
@@ -160,6 +163,7 @@ export function dashboardScreen() {
   function renderSidebar() {
     if (!profile) return;
 
+    mobileCharacterMount.replaceChildren(createMobileCharacterHeader(profile));
     sidebarMount.replaceChildren(createSidebar({
       profile,
       activeRoute: 'dashboard',

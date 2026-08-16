@@ -138,6 +138,8 @@
 .sidebar-xp__track i { position: absolute; display: block; inset: 0 auto 0 0; width: var(--sidebar-xp); border-radius: inherit; background: linear-gradient(90deg, #6530d4, #8b4df0 66%, #ae7df8); box-shadow: inset 0 2px 2px rgb(255 255 255 / 28%), 0 0 12px rgb(124 58 237 / 28%); transition: width 260ms ease; }
 .sidebar-logout { width: 100%; margin-top: 8px; }
 
+.mobile-character { display: none; }
+
 .dashboard-main {
   min-width: 0;
   padding: clamp(10px, 1.4vw, 18px) clamp(2px, .7vw, 8px) 20px;

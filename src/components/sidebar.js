@@ -1,6 +1,7 @@
 import { CircleUserRound, Home, LogOut, ListChecks } from 'lucide';
 import { createAvatarPreview } from './avatar.js';
 import { getPlayerXpProgress } from '../logic/playerXp.js';
+import { assetUrl } from '../utils/assetUrl.js';
 
 const navigation = [
   { route: 'dashboard', label: 'Главная', icon: Home },
@@ -40,7 +41,7 @@ export function createSidebar({ profile, activeRoute = 'dashboard', onLogout }) 
 
   sidebar.innerHTML = `
     <a class="sidebar-brand" href="#/dashboard" aria-label="Понемногу, главная">
-      <img src="/assets/avatar/fx/brand_mark.png" alt="" />
+      <img src="${assetUrl('assets/avatar/fx/brand_mark.png')}" alt="" />
       <span>Понемногу</span>
     </a>
     <nav class="sidebar-nav" aria-label="Навигация приложения">

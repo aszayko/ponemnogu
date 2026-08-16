@@ -1,29 +1,31 @@
+import { assetUrl } from '../utils/assetUrl.js';
+
 export const avatarAssets = {
   base: {
     male: {
-      purple: '/assets/avatar/base/colors/avatar_male_purple.png',
-      lime: '/assets/avatar/base/colors/avatar_male_lime.png',
-      blue: '/assets/avatar/base/colors/avatar_male_blue.png',
-      black: '/assets/avatar/base/colors/avatar_male_black.png',
-      pink: '/assets/avatar/base/colors/avatar_male_pink.png',
+      purple: assetUrl('assets/avatar/base/colors/avatar_male_purple.png'),
+      lime: assetUrl('assets/avatar/base/colors/avatar_male_lime.png'),
+      blue: assetUrl('assets/avatar/base/colors/avatar_male_blue.png'),
+      black: assetUrl('assets/avatar/base/colors/avatar_male_black.png'),
+      pink: assetUrl('assets/avatar/base/colors/avatar_male_pink.png'),
     },
     female: {
-      purple: '/assets/avatar/base/colors/avatar_female_purple.png',
-      lime: '/assets/avatar/base/colors/avatar_female_lime.png',
-      blue: '/assets/avatar/base/colors/avatar_female_blue.png',
-      black: '/assets/avatar/base/colors/avatar_female_black.png',
-      pink: '/assets/avatar/base/colors/avatar_female_pink.png',
+      purple: assetUrl('assets/avatar/base/colors/avatar_female_purple.png'),
+      lime: assetUrl('assets/avatar/base/colors/avatar_female_lime.png'),
+      blue: assetUrl('assets/avatar/base/colors/avatar_female_blue.png'),
+      black: assetUrl('assets/avatar/base/colors/avatar_female_black.png'),
+      pink: assetUrl('assets/avatar/base/colors/avatar_female_pink.png'),
     },
   },
-  glow: '/assets/avatar/fx/avatar_glow.png',
+  glow: assetUrl('assets/avatar/fx/avatar_glow.png'),
 };
 
 export const hairStyles = [
-  { id: 'hair_01_short_neat', label: 'Аккуратная', src: '/assets/avatar/hair/hair_01_short_neat.png' },
-  { id: 'hair_02_short_messy', label: 'Взъерошенная', src: '/assets/avatar/hair/hair_02_short_messy.png' },
-  { id: 'hair_03_straight_shoulder', label: 'До плеч', src: '/assets/avatar/hair/hair_03_straight_shoulder.png' },
-  { id: 'hair_05_long_wavy', label: 'Длинные мягкие волны', src: '/assets/avatar/hair/hair_05_long_wavy.png' },
-  { id: 'hair_06_bun', label: 'Пучок', src: '/assets/avatar/hair/hair_06_bun.png' },
+  { id: 'hair_01_short_neat', label: 'Аккуратная', src: assetUrl('assets/avatar/hair/hair_01_short_neat.png') },
+  { id: 'hair_02_short_messy', label: 'Взъерошенная', src: assetUrl('assets/avatar/hair/hair_02_short_messy.png') },
+  { id: 'hair_03_straight_shoulder', label: 'До плеч', src: assetUrl('assets/avatar/hair/hair_03_straight_shoulder.png') },
+  { id: 'hair_05_long_wavy', label: 'Длинные мягкие волны', src: assetUrl('assets/avatar/hair/hair_05_long_wavy.png') },
+  { id: 'hair_06_bun', label: 'Пучок', src: assetUrl('assets/avatar/hair/hair_06_bun.png') },
 ];
 
 export const avatarLayerConfig = {

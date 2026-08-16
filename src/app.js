@@ -2,6 +2,7 @@ import { createRouter } from './router/router.js';
 import { screens } from './screens/index.js';
 import { getAuthErrorMessage, observeAuthState } from './firebase/auth.js';
 import { ensureUserDocument } from './firebase/db.js';
+import { assetUrl } from './utils/assetUrl.js';
 
 const authRoutes = new Set(['login', 'register']);
 const protectedRoutes = new Set([
@@ -20,7 +21,7 @@ export function startApp(root) {
 
   root.innerHTML = `
     <main class="auth-loading" aria-live="polite">
-      <img src="/assets/avatar/fx/brand_mark.png" alt="" />
+      <img src="${assetUrl('assets/avatar/fx/brand_mark.png')}" alt="" />
       <p>Проверяем сохранение…</p>
     </main>
   `;

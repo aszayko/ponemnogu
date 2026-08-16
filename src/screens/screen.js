@@ -1,4 +1,5 @@
 import { getAuthErrorMessage, logout } from '../firebase/auth.js';
+import { assetUrl } from '../utils/assetUrl.js';
 
 const navigation = [
   ['login', 'Вход'],
@@ -16,7 +17,7 @@ export function createPlaceholderScreen(route, title, accent = 'lime') {
   page.innerHTML = `
     <nav class="route-nav" aria-label="Временная навигация">
       <a class="brand" href="#/dashboard" aria-label="Понемногу, главная">
-        <img src="/assets/avatar/fx/brand_mark.png" alt="" />
+        <img src="${assetUrl('assets/avatar/fx/brand_mark.png')}" alt="" />
         <span>Понемногу</span>
       </a>
       <div class="route-links">

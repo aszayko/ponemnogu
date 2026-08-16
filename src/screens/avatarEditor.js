@@ -9,6 +9,7 @@ import {
   hairColors,
   hoodieColors,
 } from '../data/colors.js';
+import { assetUrl } from '../utils/assetUrl.js';
 
 const steps = [
   { id: 'name', title: 'Как тебя называть?' },
@@ -63,7 +64,7 @@ function editorMarkup(isOnboarding) {
     ${isOnboarding ? `
       <header class="avatar-editor__header">
         <a class="auth-brand" href="#/onboarding" aria-label="Понемногу">
-          <img src="/assets/avatar/fx/brand_mark.png" alt="" />
+          <img src="${assetUrl('assets/avatar/fx/brand_mark.png')}" alt="" />
           <span>Понемногу</span>
         </a>
         <button class="route-logout" type="button" data-avatar-logout>Выйти</button>

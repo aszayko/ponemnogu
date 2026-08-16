@@ -23,6 +23,7 @@ import {
   getActiveSkills,
   updateSkill,
 } from '../services/skillService.js';
+import { assetUrl } from '../utils/assetUrl.js';
 
 const navigation = [
   ['dashboard', 'Главная'],
@@ -123,7 +124,7 @@ function screenMarkup() {
   return `
     <nav class="route-nav" aria-label="Навигация приложения">
       <a class="brand" href="#/dashboard" aria-label="Понемногу, главная">
-        <img src="/assets/avatar/fx/brand_mark.png" alt="" />
+        <img src="${assetUrl('assets/avatar/fx/brand_mark.png')}" alt="" />
         <span>Понемногу</span>
       </a>
       <div class="route-links">

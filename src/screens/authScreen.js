@@ -1,10 +1,12 @@
+import { assetUrl } from '../utils/assetUrl.js';
+
 export function createAuthScreen({ eyebrow, title, description, content }) {
   const page = document.createElement('main');
   page.className = 'auth-page';
   page.innerHTML = `
     <section class="auth-panel">
       <a class="auth-brand" href="#/login" aria-label="Понемногу">
-        <img src="/assets/avatar/fx/brand_mark.png" alt="" />
+        <img src="${assetUrl('assets/avatar/fx/brand_mark.png')}" alt="" />
         <span>Понемногу</span>
       </a>
       <div class="auth-copy">

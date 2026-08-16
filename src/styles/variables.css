@@ -1,0 +1,15 @@
+:root {
+  --bg: #f7f7f3;
+  --surface: #ffffff;
+  --text: #182033;
+  --muted: #7c8496;
+  --line: #e7e9ee;
+  --lime: #9fd236;
+  --lime-soft: #edf7d2;
+  --purple: #7c3aed;
+  --purple-soft: #eee7ff;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --shadow-soft: 0 18px 50px rgb(24 32 51 / 8%);
+}

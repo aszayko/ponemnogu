@@ -1,0 +1,342 @@
+@media (max-width: 760px) {
+  .placeholder-page { padding: 16px; }
+  .route-nav { align-items: flex-start; flex-direction: column; }
+  .route-links { justify-content: flex-start; }
+  .placeholder-card { margin-top: 10vh; }
+}
+
+@media (max-width: 1024px) {
+  html,
+  body,
+  #app { max-width: 100%; overflow-x: clip; }
+
+  .dashboard-page {
+    display: block;
+    width: 100%;
+    min-height: 100dvh;
+    padding: 12px;
+    overflow-x: clip;
+  }
+
+  .dashboard-page > [data-dashboard-sidebar],
+  .app-shell-page > div:first-child { width: 100%; min-width: 0; }
+
+  .app-sidebar {
+    position: static;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 9px 10px;
+    overflow: visible;
+    border-radius: 18px;
+  }
+
+  .sidebar-brand { gap: 8px; padding: 0; font-size: .88rem; }
+  .sidebar-brand img { width: 32px; height: 32px; }
+  .sidebar-nav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: min(520px, 100%);
+    justify-self: end;
+    gap: 5px;
+  }
+  .sidebar-nav a { min-height: 44px; justify-content: center; gap: 6px; padding: 6px 8px; font-size: .72rem; }
+  .sidebar-nav__icon { width: 17px; height: 17px; }
+  .sidebar-player,
+  .sidebar-logout { display: none; }
+
+  .dashboard-main,
+  .app-shell-main { width: 100%; max-width: 100%; min-width: 0; padding-inline: 0; }
+
+  .month-tracker,
+  .month-tracker__scroll { width: 100%; max-width: 100%; min-width: 0; }
+  .month-tracker__scroll { overflow-x: auto; overscroll-behavior-inline: contain; }
+  .tracker-table { width: 100%; min-width: 1270px; }
+  .tracker-header,
+  .tracker-row { grid-template-columns: 180px minmax(930px, 1fr) 160px; }
+  .tracker-row { min-height: 80px; overflow: hidden; }
+  .tracker-habit { position: static; min-height: 0; background: transparent; box-shadow: none; }
+  .tracker-progress { position: static; left: auto; grid-column: auto; width: auto; min-height: 0; border-top: 0; background: transparent; }
+  .tracker-progress--heading { display: grid; }
+  .tracker-days { grid-template-columns: repeat(var(--month-days), minmax(30px, 1fr)); }
+
+  .app-shell-page .avatar-editor {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 10px 2px 34px;
+    overflow: visible;
+  }
+  .app-shell-page .avatar-editor__layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+  .app-shell-page .avatar-showcase { min-height: clamp(410px, 62vh, 500px); }
+  .app-shell-page [data-avatar-preview] { width: min(460px, 100%); }
+  .app-shell-page .avatar-wizard { width: min(680px, 100%); max-height: none; justify-self: center; }
+  .app-shell-page .wizard-step { min-height: 300px; }
+
+  .app-toast-region {
+    top: max(84px, calc(env(safe-area-inset-top) + 72px));
+    left: 50%;
+    width: min(420px, calc(100vw - 28px));
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-page { padding: 10px 0 0; }
+  .app-sidebar { width: calc(100% - 20px); gap: 7px; margin: 0 10px 8px; padding: 8px; }
+  .sidebar-brand { gap: 5px; }
+  .sidebar-brand span { display: none; }
+  .sidebar-brand img { width: 31px; height: 31px; }
+  .sidebar-nav { gap: 3px; }
+  .sidebar-nav a { min-width: 0; min-height: 43px; gap: 4px; padding: 5px 3px; font-size: .63rem; }
+
+  .dashboard-main,
+  .app-shell-page .habits-page,
+  .app-shell-page .profile-page {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transform: none;
+  }
+
+  .dashboard-main { padding: 14px 20px 18px; }
+  .dashboard-header,
+  .habits-header,
+  .profile-header,
+  .dashboard-heading,
+  .habits-header > div {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-right: 0;
+    margin-left: 0;
+    padding-right: 0;
+    padding-left: 0;
+    box-sizing: border-box;
+    transform: none;
+  }
+  .dashboard-header { align-items: stretch; gap: 17px; margin-bottom: 16px; }
+  .dashboard-heading h1,
+  .habits-header h1,
+  .profile-header h1,
+  .habits-header .eyebrow,
+  .profile-header .eyebrow {
+    width: 100%;
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    box-sizing: border-box;
+  }
+  .dashboard-heading .eyebrow { display: none; }
+  .dashboard-heading h1 { margin: 0; font-size: clamp(1.42rem, 7vw, 1.8rem); }
+  .month-controls { width: 100%; max-width: 100%; margin-right: 0; margin-left: 0; align-self: auto; padding: 3px; box-sizing: border-box; }
+  .month-controls button { min-width: 34px; height: 34px; padding: 0 7px; }
+  .month-controls strong { min-width: 104px; padding: 0 4px; font-size: .72rem; }
+  .dashboard-status { margin: 0 0 9px; font-size: .76rem; }
+  .dashboard-status:empty { display: none; }
+
+  [data-dashboard-content],
+  .month-tracker,
+  .tracker-table { width: 100%; max-width: 100%; min-width: 0; overflow-x: clip; }
+  .month-tracker__scroll { width: 100%; max-width: 100%; margin: 0; padding: 1px; overflow: visible; }
+  .tracker-table { min-width: 0; }
+  .tracker-header { display: none; }
+  .tracker-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "habit"
+      "progress"
+      "days";
+    min-height: 0;
+    margin-top: 8px;
+    overflow: hidden;
+    border-radius: 18px;
+  }
+  .tracker-row:first-of-type { margin-top: 2px; }
+  .tracker-habit {
+    grid-area: habit;
+    min-height: 0;
+    gap: 10px;
+    padding: 11px 12px 5px;
+  }
+  .tracker-habit__icon { width: 44px; height: 44px; border-radius: 13px; }
+  .tracker-habit-icon { width: 21px; height: 21px; }
+  .tracker-habit__copy strong { font-size: .94rem; white-space: normal; }
+  .tracker-habit__copy small { font-size: .69rem; }
+  .tracker-progress {
+    grid-area: progress;
+    gap: 4px;
+    padding: 2px 12px 8px;
+  }
+  .tracker-progress__meta strong { font-size: .75rem; }
+  .tracker-progress__bar { height: 8px; }
+  .tracker-progress small { font-size: .65rem; }
+  .tracker-days {
+    grid-area: days;
+    display: grid;
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 40px;
+    width: 100%;
+    min-width: 0;
+    gap: 5px;
+    padding: 6px 10px 10px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 11px;
+    scrollbar-color: #cfd3db transparent;
+    scrollbar-width: thin;
+  }
+  .tracker-day-cell {
+    grid-template-rows: auto 32px;
+    min-width: 40px;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 11px;
+    scroll-snap-align: center;
+  }
+  .tracker-mobile-day-number {
+    display: block;
+    color: #788092;
+    font-size: .65rem;
+    font-weight: 780;
+    line-height: 1;
+  }
+  .tracker-day-cell.is-today .tracker-mobile-day-number { color: #4c6900; }
+  .tracker-check { width: 32px; height: 32px; }
+
+  .dashboard-summary { grid-template-columns: 1fr; gap: 0; margin: 11px 0 0; padding: 7px; }
+  .dashboard-summary__item { gap: 10px; padding: 7px 9px; }
+  .dashboard-summary__item + .dashboard-summary__item { border-top: 1px solid var(--line); border-left: 0; border-radius: 0 0 14px 14px; }
+  .dashboard-summary__icon { width: 34px; height: 34px; border-radius: 10px; }
+
+  .habits-page,
+  .app-shell-page .habits-page { padding: 14px 20px 24px; }
+  .app-shell-page .habits-shell { margin: 0; padding: 0; }
+  .habits-header { gap: 16px; margin-bottom: 17px; }
+  .habits-header h1 { margin-top: 9px; font-size: clamp(1.9rem, 9vw, 2.35rem); }
+  .habits-status { margin: 0 0 12px; }
+  .habits-shell,
+  .habits-grid,
+  .habit-card { width: 100%; min-width: 0; max-width: 100%; }
+  .habit-card { min-height: 0; }
+  .habit-card__topline { min-width: 0; gap: 10px; }
+  .habit-card__actions { flex: 0 0 auto; }
+  .habit-card__stage { min-width: 0; gap: 8px; }
+  .habit-card__stage strong { min-width: 0; max-width: 66%; overflow-wrap: anywhere; text-align: center; }
+
+  .app-shell-page .profile-page { padding: 14px 20px 24px; }
+  .profile-header { margin: 0 0 18px; }
+  .profile-header h1 { margin-top: 9px; font-size: clamp(1.9rem, 9vw, 2.35rem); }
+  .profile-grid { gap: 11px; }
+  .profile-character-card { padding: 5px 16px 16px; }
+  .profile-avatar { width: min(215px, 78%); height: clamp(202px, 54vw, 242px); }
+  .profile-character-card > strong { font-size: 1.22rem; }
+  .profile-character-card > span { margin: 3px 0 10px; }
+  .profile-details-card { min-width: 0; }
+  .profile-actions .button { max-width: 100%; white-space: normal; text-align: center; }
+
+  .app-shell-page .avatar-editor {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 8px 16px 26px;
+    box-sizing: border-box;
+    overflow-x: clip;
+  }
+  .app-shell-page .avatar-editor__layout,
+  .app-shell-page .avatar-showcase,
+  .app-shell-page .avatar-wizard,
+  .app-shell-page .avatar-form,
+  .app-shell-page .wizard-step {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .app-shell-page .avatar-editor__layout { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .app-shell-page .avatar-showcase { min-height: 310px; }
+  .app-shell-page [data-avatar-preview] { width: min(285px, 86%); max-width: 100%; }
+  .app-shell-page .avatar-wizard { padding: 20px 16px; border-radius: 20px; overflow: hidden; }
+  .app-shell-page .wizard-step { min-height: 0; padding-bottom: 28px; }
+  .app-shell-page .wizard-step h1 { font-size: clamp(1.55rem, 7.5vw, 1.95rem); }
+
+  .app-shell-page .avatar-options--gender,
+  .app-shell-page .avatar-options--hair,
+  .app-shell-page .avatar-options--colors,
+  .app-shell-page .avatar-options--eyes,
+  .app-shell-page .avatar-options--hoodie {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    min-width: 0;
+    gap: 10px;
+  }
+  .app-shell-page .avatar-options--gender .avatar-option,
+  .app-shell-page .avatar-options--hair .avatar-option,
+  .app-shell-page .avatar-options--colors .avatar-option,
+  .app-shell-page .avatar-options--eyes .avatar-option,
+  .app-shell-page .avatar-options--hoodie .avatar-option {
+    grid-column: auto;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .app-shell-page .wizard-actions {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 10px;
+    margin-top: 0;
+    padding-top: 0;
+    background: none;
+  }
+  .app-shell-page .wizard-actions .button { width: 100%; min-width: 0; }
+  .app-shell-page .avatar-form__status { min-height: 0; margin: 0 0 8px; }
+  .app-shell-page .avatar-form__status:empty { display: none; }
+
+  .app-shell-page .avatar-summary div {
+    display: grid;
+    grid-template-columns: minmax(88px, .8fr) minmax(0, 1.2fr);
+    align-items: start;
+    gap: 12px;
+  }
+  .app-shell-page .avatar-summary dt,
+  .app-shell-page .avatar-summary dd { min-width: 0; }
+  .app-shell-page .avatar-summary dd {
+    width: 100%;
+    max-width: none;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    line-height: 1.35;
+  }
+
+  .habit-dialog { width: min(calc(100% - 16px), 720px); max-height: calc(100dvh - 12px); }
+  .habit-form { max-height: calc(100dvh - 12px); }
+  .habit-form__body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  .habit-form__footer { position: sticky; z-index: 2; bottom: 0; }
+
+  .practice-dialog { width: calc(100% - 20px); max-height: calc(100dvh - 16px); }
+  .practice-form { max-height: calc(100dvh - 16px); padding: 22px 18px; overflow-y: auto; }
+
+  .app-toast-region {
+    top: max(82px, calc(env(safe-area-inset-top) + 70px));
+    width: calc(100% - 24px);
+  }
+}

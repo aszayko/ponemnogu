@@ -131,6 +131,7 @@
 }
 .sidebar-player__copy strong { max-width: 210px; overflow: hidden; font-size: 1.12rem; font-weight: 850; letter-spacing: -.025em; text-overflow: ellipsis; white-space: nowrap; }
 .sidebar-player__copy span { color: var(--purple); font-size: .72rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+.sidebar-player__title { max-width: 100%; color: #625b70; font-size: .68rem; font-weight: 750; line-height: 1.3; text-align: center; }
 
 .sidebar-xp { width: 100%; margin-top: 13px; }
 .sidebar-xp__meta { display: flex; justify-content: space-between; margin-bottom: 7px; color: #70788a; font-size: .68rem; font-weight: 750; }
@@ -139,6 +140,7 @@
 .sidebar-logout { width: 100%; margin-top: 8px; }
 
 .mobile-character { display: none; }
+.mobile-character__title { color: #625b70; font-size: .66rem; font-weight: 750; line-height: 1.3; }
 
 .dashboard-main {
   min-width: 0;
@@ -583,6 +585,7 @@
   transform: translateY(-12px) scale(.985);
   transition: opacity 220ms ease, transform 220ms ease;
   backdrop-filter: blur(16px);
+  white-space: pre-line;
 }
 
 .app-toast::before { display: inline-block; width: 8px; height: 8px; margin-right: 10px; border-radius: 50%; background: #91bf31; content: ''; box-shadow: 0 0 0 5px rgb(182 224 92 / 22%); }

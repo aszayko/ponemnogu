@@ -7,6 +7,33 @@ import { isHabitPlannedOnDate } from './schedules.js';
 
 export const XP_PER_COMPLETION = 10;
 
+const PLAYER_TITLE_LEVELS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+export function getPlayerTitle(level, bodyType) {
+  const normalizedLevel = Math.max(1, Math.floor(Number(level) || 1));
+
+  if (normalizedLevel >= 100) {
+    return bodyType === 'male'
+      ? 'Главный красавчик галактики'
+      : 'Главная красотка галактики';
+  }
+  if (normalizedLevel >= 90) return 'Золотой человек';
+  if (normalizedLevel >= 80) return 'Дракон с ежедневником';
+  if (normalizedLevel >= 70) return bodyType === 'male' ? 'Опасный тип' : 'Опасная штучка';
+  if (normalizedLevel >= 60) return 'Очень важная персона';
+  if (normalizedLevel >= 50) return 'Архимаг рутины';
+  if (normalizedLevel >= 40) return 'Легендарный пирожочек';
+  if (normalizedLevel >= 30) return 'Укротитель понедельников';
+  if (normalizedLevel >= 20) return 'Крутой перец';
+  if (normalizedLevel >= 10) return 'Дисциплинированный котик';
+  return 'Человек с намерениями';
+}
+
+export function getNextPlayerTitleLevel(level) {
+  const normalizedLevel = Math.max(1, Math.floor(Number(level) || 1));
+  return PLAYER_TITLE_LEVELS.find((titleLevel) => titleLevel > normalizedLevel) ?? null;
+}
+
 export function xpNeededForNextLevel(level) {
   const normalizedLevel = Math.max(1, Math.floor(Number(level) || 1));
   return 100 + (normalizedLevel - 1) * 50;

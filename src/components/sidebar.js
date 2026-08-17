@@ -1,6 +1,6 @@
 import { CircleUserRound, Home, LogOut, ListChecks } from 'lucide';
 import { createAvatarPreview } from './avatar.js';
-import { getPlayerXpProgress } from '../logic/playerXp.js';
+import { getPlayerTitle, getPlayerXpProgress } from '../logic/playerXp.js';
 import { assetUrl } from '../utils/assetUrl.js';
 
 const navigation = [
@@ -37,6 +37,7 @@ export function createSidebar({ profile, activeRoute = 'dashboard', onLogout }) 
   const sidebar = document.createElement('aside');
   sidebar.className = 'app-sidebar';
   const xp = getPlayerXpProgress(profile.totalXp, profile.playerLevel);
+  const title = getPlayerTitle(xp.level, profile.avatar?.bodyType);
   const displayName = profile.displayName || 'Пользователь';
 
   sidebar.innerHTML = `
@@ -57,6 +58,7 @@ export function createSidebar({ profile, activeRoute = 'dashboard', onLogout }) 
       <div class="sidebar-player__copy">
         <strong>${escapeHtml(displayName)}</strong>
         <span>Уровень ${xp.level}</span>
+        <small class="sidebar-player__title">${escapeHtml(title)}</small>
       </div>
       <div class="sidebar-xp">
         <div class="sidebar-xp__meta">

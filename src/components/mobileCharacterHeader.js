@@ -1,5 +1,5 @@
 import { createAvatarPreview } from './avatar.js';
-import { getPlayerXpProgress } from '../logic/playerXp.js';
+import { getPlayerTitle, getPlayerXpProgress } from '../logic/playerXp.js';
 
 function escapeHtml(value) {
   return String(value)
@@ -13,6 +13,7 @@ function escapeHtml(value) {
 export function createMobileCharacterHeader(profile) {
   const character = document.createElement('section');
   const xp = getPlayerXpProgress(profile.totalXp, profile.playerLevel);
+  const title = getPlayerTitle(xp.level, profile.avatar?.bodyType);
   const displayName = profile.displayName || 'Пользователь';
 
   character.className = 'mobile-character';
@@ -22,6 +23,7 @@ export function createMobileCharacterHeader(profile) {
     <div class="mobile-character__info">
       <strong title="${escapeHtml(displayName)}">${escapeHtml(displayName)}</strong>
       <span class="mobile-character__level">Уровень ${xp.level}</span>
+      <span class="mobile-character__title">${escapeHtml(title)}</span>
       <div class="mobile-character__xp-meta">
         <span>XP</span>
         <span>${xp.currentXp} / ${xp.neededXp}</span>

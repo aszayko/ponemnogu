@@ -31,6 +31,7 @@ import {
   parseLocalDateKey,
 } from '../logic/dates.js';
 import { getHabitStage } from '../logic/habitStrength.js';
+import { getPlayerTitle } from '../logic/playerXp.js';
 import { isHabitPlannedOnDate } from '../logic/schedules.js';
 import { formatPracticeDuration, getTrackerSummary } from '../logic/trackerSummary.js';
 import { getActiveHabits } from '../services/habitService.js';
@@ -349,7 +350,11 @@ export function dashboardScreen() {
     const bodyType = snapshot.profile?.avatar?.bodyType;
 
     if (nextLevel > context.previousLevel) {
-      message = getLevelUpMessage(bodyType);
+      const previousTitle = getPlayerTitle(context.previousLevel, bodyType);
+      const nextTitle = getPlayerTitle(nextLevel, bodyType);
+      message = previousTitle === nextTitle
+        ? getLevelUpMessage(bodyType)
+        : `НОВОЕ ЗВАНИЕ\n${nextTitle}`;
       reaction = 'levelUp';
     } else if (nextStage !== previousStage) {
       message = getStageTransitionMessage(

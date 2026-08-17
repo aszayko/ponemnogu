@@ -50,9 +50,12 @@
 
 .profile-xp { margin-top: 8px; padding: 18px; border-radius: 18px; background: var(--purple-soft); }
 .profile-xp > div:first-child { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 11px; }
+.profile-xp__identity { display: grid; gap: 3px; }
+.profile-xp__identity small { color: #5e5277; font-size: .72rem; font-weight: 750; line-height: 1.3; }
 .profile-xp span { color: #6f6487; font-size: .78rem; font-weight: 750; }
 .profile-xp__track { position: relative; height: 13px; overflow: hidden; border-radius: 999px; background: rgb(255 255 255 / 72%); box-shadow: inset 0 1px 3px rgb(42 29 75 / 12%); }
 .profile-xp__track i { position: absolute; inset: 0 auto 0 0; width: var(--profile-xp); border-radius: inherit; background: linear-gradient(90deg, #6530d4, #8b4df0 66%, #ae7df8); }
+.profile-xp__next-title { margin: 10px 0 0; color: #756a8c; font-size: .74rem; font-weight: 700; }
 
 .profile-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
 .profile-button--primary { display: inline-flex; align-items: center; gap: 8px; background: var(--lime); color: #263600; text-decoration: none; }

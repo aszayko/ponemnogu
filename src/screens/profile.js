@@ -14,7 +14,11 @@ import {
   resetPassword,
 } from '../firebase/auth.js';
 import { getUserDocument } from '../firebase/db.js';
-import { getPlayerXpProgress } from '../logic/playerXp.js';
+import {
+  getNextPlayerTitleLevel,
+  getPlayerTitle,
+  getPlayerXpProgress,
+} from '../logic/playerXp.js';
 
 function escapeHtml(value) {
   return String(value)
@@ -57,6 +61,8 @@ function formatRegistrationDate(profile, firebaseUser) {
 
 function profileMarkup(profile, firebaseUser) {
   const xp = getPlayerXpProgress(profile.totalXp, profile.playerLevel);
+  const playerTitle = getPlayerTitle(xp.level, profile.avatar?.bodyType);
+  const nextTitleLevel = getNextPlayerTitleLevel(xp.level);
   const name = profile.displayName || firebaseUser?.displayName || 'Пользователь';
   const email = profile.email || firebaseUser?.email || 'Email не указан';
 
@@ -85,10 +91,17 @@ function profileMarkup(profile, firebaseUser) {
           <span><small>Дата регистрации</small><strong>${escapeHtml(formatRegistrationDate(profile, firebaseUser))}</strong></span>
         </div>
         <div class="profile-xp">
-          <div><strong>Уровень ${xp.level}</strong><span>${xp.currentXp} / ${xp.neededXp} XP</span></div>
+          <div>
+            <span class="profile-xp__identity">
+              <strong>Уровень ${xp.level}</strong>
+              <small>${escapeHtml(playerTitle)}</small>
+            </span>
+            <span>${xp.currentXp} / ${xp.neededXp} XP</span>
+          </div>
           <div class="profile-xp__track" role="progressbar" aria-label="Прогресс уровня" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(xp.progressPercent)}">
             <i style="--profile-xp: ${xp.progressPercent}%"></i>
           </div>
+          ${nextTitleLevel ? `<p class="profile-xp__next-title">Следующее звание — на уровне ${nextTitleLevel}</p>` : ''}
         </div>
         <div class="profile-actions">
           <button class="button profile-button--secondary" type="button" data-profile-reset>

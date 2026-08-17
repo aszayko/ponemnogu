@@ -277,23 +277,24 @@ export function dashboardScreen() {
     const nextLevel = Number(snapshot.profile?.playerLevel) || 1;
     let message = null;
     let tone = 'purple';
+    const bodyType = snapshot.profile?.avatar?.bodyType;
 
     if (nextLevel > context.previousLevel) {
-      message = getLevelUpMessage();
+      message = getLevelUpMessage(bodyType);
     } else if (nextStage !== previousStage) {
       message = getStageTransitionMessage(
         previousStage,
         nextStage,
-        snapshot.profile?.avatar?.bodyType,
+        bodyType,
       );
     } else if (
       context.date === todayKey
       && allScheduledHabitsDoneToday(snapshot.habits, snapshot.logs)
     ) {
-      message = getAllDoneMessage(snapshot.profile?.avatar?.bodyType);
+      message = getAllDoneMessage(bodyType);
       tone = 'lime';
     } else {
-      message = getOccasionalCompletionMessage({ force: debugMessages });
+      message = getOccasionalCompletionMessage({ force: debugMessages, bodyType });
       tone = 'lime';
     }
 

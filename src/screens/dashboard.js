@@ -268,6 +268,74 @@ export function dashboardScreen() {
     return hasScheduledHabit && allDone;
   }
 
+  function createSparkles(className) {
+    const sparkles = document.createElement('span');
+    sparkles.className = className;
+    sparkles.setAttribute('aria-hidden', 'true');
+    sparkles.append(...Array.from({ length: 4 }, () => document.createElement('i')));
+    return sparkles;
+  }
+
+  function playGameFeel(context, updatedHabit, reaction) {
+    const reactionElements = [];
+    const temporaryElements = [];
+    const rewardedButton = [...content.querySelectorAll('[data-toggle-habit]')].find((button) => (
+      button.dataset.toggleHabit === context.habit.id
+      && button.dataset.date === context.date
+    ));
+
+    if (rewardedButton) {
+      const dayCell = rewardedButton.closest('.tracker-day-cell');
+      const row = rewardedButton.closest('.tracker-row');
+      const xp = document.createElement('span');
+      xp.className = 'tracker-xp-pop';
+      xp.setAttribute('aria-hidden', 'true');
+      xp.textContent = '+10 XP';
+      const sparkles = createSparkles('completion-sparkles');
+
+      rewardedButton.classList.add('is-rewarded');
+      dayCell.dataset.reaction = reaction;
+      dayCell.append(xp, sparkles);
+      reactionElements.push(rewardedButton, dayCell);
+      temporaryElements.push(xp, sparkles);
+
+      if (row) {
+        const strengthFill = row.querySelector('.tracker-progress__bar i');
+        const previousStrength = Math.min(100, Math.max(0, Number(context.habit.habitStrength) || 0));
+        const nextStrength = Math.min(100, Math.max(0, Number(updatedHabit?.habitStrength) || 0));
+        row.classList.add('is-rewarding');
+        row.dataset.reaction = reaction;
+        reactionElements.push(row);
+
+        if (strengthFill && previousStrength !== nextStrength) {
+          strengthFill.style.setProperty('--habit-strength', `${previousStrength}%`);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              strengthFill.style.setProperty('--habit-strength', `${nextStrength}%`);
+            });
+          });
+        }
+      }
+    }
+
+    page.querySelectorAll('.sidebar-player, .mobile-character').forEach((characterCard) => {
+      const sparkles = createSparkles('avatar-reaction-sparkles');
+      characterCard.classList.add('is-reacting');
+      characterCard.dataset.reaction = reaction;
+      characterCard.append(sparkles);
+      reactionElements.push(characterCard);
+      temporaryElements.push(sparkles);
+    });
+
+    window.setTimeout(() => {
+      reactionElements.forEach((element) => {
+        element.classList.remove('is-rewarded', 'is-rewarding', 'is-reacting');
+        delete element.dataset.reaction;
+      });
+      temporaryElements.forEach((element) => element.remove());
+    }, 1200);
+  }
+
   function showCompletionFeedback(context, snapshot) {
     if (!snapshot) return;
 
@@ -277,16 +345,19 @@ export function dashboardScreen() {
     const nextLevel = Number(snapshot.profile?.playerLevel) || 1;
     let message = null;
     let tone = 'purple';
+    let reaction = 'completion';
     const bodyType = snapshot.profile?.avatar?.bodyType;
 
     if (nextLevel > context.previousLevel) {
       message = getLevelUpMessage(bodyType);
+      reaction = 'levelUp';
     } else if (nextStage !== previousStage) {
       message = getStageTransitionMessage(
         previousStage,
         nextStage,
         bodyType,
       );
+      reaction = 'stageChange';
     } else if (
       context.date === todayKey
       && allScheduledHabitsDoneToday(snapshot.habits, snapshot.logs)
@@ -298,6 +369,7 @@ export function dashboardScreen() {
       tone = 'lime';
     }
 
+    playGameFeel(context, updatedHabit, reaction);
     toast.show(message, tone);
   }
 

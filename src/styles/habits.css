@@ -193,6 +193,26 @@
 
 .habit-dialog > section { padding: clamp(22px, 4vw, 32px); }
 
+.habit-history-dialog { width: min(580px, calc(100% - 32px)); }
+.habit-history-dialog > section { display: grid; max-height: min(720px, calc(100dvh - 24px)); grid-template-rows: auto auto auto minmax(0, 1fr); overflow: hidden; }
+.habit-history-dialog__header { align-items: flex-start; margin-bottom: 18px; }
+.habit-history-dialog__header h2 { margin: 5px 0 0; overflow-wrap: anywhere; font-size: 1.65rem; letter-spacing: -.025em; }
+.habit-history-month { display: grid; grid-template-columns: 40px minmax(0, 1fr) 40px; align-items: center; gap: 8px; padding: 4px; border: 1px solid var(--line); border-radius: 14px; background: var(--bg); }
+.habit-history-month button { display: grid; width: 40px; height: 40px; place-items: center; padding: 0; border: 0; border-radius: 10px; background: transparent; color: var(--text); cursor: pointer; }
+.habit-history-month button:hover { background: var(--purple-soft); color: var(--purple); }
+.habit-history-month strong { text-align: center; font-size: .9rem; }
+.habit-history-control-icon { width: 18px; height: 18px; }
+.habit-history-status { min-height: 1.35em; margin: 12px 2px 4px; }
+.habit-history-status:empty { min-height: 0; margin-top: 8px; }
+.habit-history-list { display: grid; align-content: start; gap: 10px; min-height: 180px; padding: 4px 4px 2px; overflow-y: auto; overscroll-behavior: contain; }
+.habit-history-entry { padding: 14px 15px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+.habit-history-entry strong { display: block; font-size: .92rem; }
+.habit-history-entry p { margin: 7px 0 0; color: var(--muted); line-height: 1.5; overflow-wrap: anywhere; white-space: pre-wrap; }
+.habit-history-empty { display: grid; justify-items: center; align-self: center; gap: 7px; padding: 34px 18px; color: var(--muted); text-align: center; }
+.habit-history-empty__icon { width: 34px; height: 34px; margin-bottom: 3px; color: var(--purple); }
+.habit-history-empty strong { color: var(--text); }
+.habit-history-empty span { font-size: .86rem; }
+
 .habit-form {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
@@ -373,6 +393,10 @@
   .habit-form__footer { padding-right: 18px; padding-left: 18px; }
   .habit-dialog { width: min(100% - 16px, 720px); max-height: calc(100dvh - 12px); }
   .habit-form { max-height: calc(100dvh - 12px); }
+  .habit-history-dialog { width: min(100% - 16px, 580px); max-height: calc(100dvh - 12px); }
+  .habit-history-dialog > section { max-height: calc(100dvh - 12px); padding: 20px 16px; }
+  .habit-history-dialog__header h2 { font-size: 1.4rem; }
+  .habit-history-entry { padding: 13px; }
 }
 
 @media (min-width: 601px) and (max-width: 620px) {

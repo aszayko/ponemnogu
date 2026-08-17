@@ -39,6 +39,11 @@ function normalizeMinutes(minutes) {
   return normalizedMinutes;
 }
 
+function normalizeNote(note) {
+  const normalizedNote = String(note ?? '').trim();
+  return normalizedNote || null;
+}
+
 function clampSkillMinutes(totalMinutes) {
   const minutes = Number(totalMinutes);
   return Number.isFinite(minutes) ? Math.max(0, Math.floor(minutes)) : 0;
@@ -144,7 +149,13 @@ export async function synchronizeProgress(firebaseUser) {
   };
 }
 
-export async function setHabitCompletion(firebaseUser, habit, date, actualMinutes = null) {
+export async function setHabitCompletion(
+  firebaseUser,
+  habit,
+  date,
+  actualMinutes = null,
+  note = null,
+) {
   const uid = requireUser(firebaseUser);
   const normalizedDate = validatePastOrTodayDate(date);
   const parsedDate = parseLocalDateKey(normalizedDate);
@@ -169,6 +180,7 @@ export async function setHabitCompletion(firebaseUser, habit, date, actualMinute
       date: normalizedDate,
       completed: true,
       actualMinutes: minutes,
+      note: normalizeNote(note),
       xpAwarded: 0,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -176,6 +188,40 @@ export async function setHabitCompletion(firebaseUser, habit, date, actualMinute
   });
 
   await synchronizeProgress(firebaseUser);
+
+  return habitLogId;
+}
+
+export async function updateHabitCompletion(
+  firebaseUser,
+  habit,
+  date,
+  { actualMinutes = null, note = null } = {},
+) {
+  const uid = requireUser(firebaseUser);
+  const normalizedDate = validatePastOrTodayDate(date);
+
+  if (!habit?.id || (habit.startDate && normalizedDate < habit.startDate)) {
+    throw new Error('Нельзя изменить дату до создания привычки.');
+  }
+
+  const habitLogId = getHabitLogId(habit.id, normalizedDate);
+  const habitLogRef = doc(db, 'users', uid, 'habitLogs', habitLogId);
+  const minutes = habit.goalType === 'minutes' ? normalizeMinutes(actualMinutes) : null;
+
+  await runTransaction(db, async (transaction) => {
+    const habitLogSnapshot = await transaction.get(habitLogRef);
+
+    if (!habitLogSnapshot.exists() || habitLogSnapshot.data().completed !== true) {
+      throw new Error('Отметка за этот день не найдена.');
+    }
+
+    transaction.update(habitLogRef, {
+      actualMinutes: minutes,
+      note: normalizeNote(note),
+      updatedAt: serverTimestamp(),
+    });
+  });
 
   return habitLogId;
 }

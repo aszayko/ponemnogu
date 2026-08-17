@@ -39,6 +39,7 @@ import {
   removeHabitCompletion,
   setHabitCompletion,
   synchronizeProgress,
+  updateHabitCompletion,
 } from '../services/logService.js';
 
 function escapeHtml(value) {
@@ -95,14 +96,14 @@ function screenMarkup() {
         <header class="practice-dialog__header">
           <div>
             <p class="eyebrow">Практика</p>
-            <h2>Сколько получилось?</h2>
+            <h2 data-practice-dialog-title>Сколько получилось?</h2>
           </div>
           <button type="button" class="practice-dialog__close" data-close-minutes-dialog aria-label="Закрыть">
             ${iconMarkup(X, 'practice-action-icon')}
           </button>
         </header>
         <p class="practice-dialog__context" data-minutes-context></p>
-        <label class="practice-minutes-field">
+        <label class="practice-minutes-field" data-minutes-field>
           <span>Фактическое время</span>
           <span class="practice-stepper">
             <button type="button" data-adjust-minutes="-5" aria-label="Уменьшить на 5 минут">${iconMarkup(Minus, 'practice-stepper__icon')}</button>
@@ -113,8 +114,13 @@ function screenMarkup() {
             <button type="button" data-adjust-minutes="5" aria-label="Увеличить на 5 минут">${iconMarkup(Plus, 'practice-stepper__icon')}</button>
           </span>
         </label>
+        <label class="practice-note-field">
+          <span>Заметка — необязательно</span>
+          <textarea name="note" rows="4" maxlength="1000" placeholder="Что хочется запомнить?"></textarea>
+        </label>
         <p class="form-status" data-minutes-status role="status" aria-live="polite"></p>
         <div class="practice-dialog__actions">
+          <button class="button practice-button--remove" type="button" data-remove-completion hidden>Снять отметку</button>
           <button class="button practice-button--secondary" type="button" data-close-minutes-dialog>Отмена</button>
           <button class="button button--primary" type="submit" data-save-minutes>Сохранить</button>
         </div>
@@ -198,18 +204,27 @@ export function dashboardScreen() {
     `;
   }
 
-  function openMinutesDialog(habit, date) {
+  function openCompletionDialog(habit, date, log = null) {
     pendingCompletion = {
       habit,
       date,
+      log,
       previousLevel: Number(profile?.playerLevel) || 1,
     };
     minutesForm.reset();
-    minutesForm.elements.minutes.value = habit.targetMinutes ?? 1;
+    const isEditing = Boolean(log);
+    const hasMinutes = habit.goalType === 'minutes';
+    page.querySelector('[data-practice-dialog-title]').textContent = isEditing
+      ? 'Редактировать отметку'
+      : 'Сколько получилось?';
+    page.querySelector('[data-minutes-field]').hidden = !hasMinutes;
+    page.querySelector('[data-remove-completion]').hidden = !isEditing;
+    minutesForm.elements.minutes.value = log?.actualMinutes ?? habit.targetMinutes ?? 1;
+    minutesForm.elements.note.value = log?.note ?? '';
     page.querySelector('[data-minutes-context]').textContent = `${habit.name} · ${formatCalendarDate(date)}`;
     minutesStatus.textContent = '';
     minutesDialog.showModal();
-    minutesForm.elements.minutes.focus();
+    (hasMinutes ? minutesForm.elements.minutes : minutesForm.elements.note).focus();
   }
 
   function weekRangeFor(dateKey) {
@@ -290,13 +305,12 @@ export function dashboardScreen() {
 
     try {
       if (log) {
-        await removeHabitCompletion(auth.currentUser, habit, date);
-        await loadMonth({ refreshProfile: true });
+        openCompletionDialog(habit, date, log);
         return;
       }
 
       if (habit.goalType === 'minutes') {
-        openMinutesDialog(habit, date);
+        openCompletionDialog(habit, date);
         return;
       }
 
@@ -411,6 +425,25 @@ export function dashboardScreen() {
     });
   });
 
+  page.querySelector('[data-remove-completion]').addEventListener('click', async (event) => {
+    if (!pendingCompletion?.log) return;
+
+    const completion = pendingCompletion;
+    const button = event.currentTarget;
+    button.disabled = true;
+    minutesStatus.textContent = '';
+
+    try {
+      await removeHabitCompletion(auth.currentUser, completion.habit, completion.date);
+      minutesDialog.close();
+      await loadMonth({ refreshProfile: true });
+    } catch (error) {
+      minutesStatus.textContent = getAuthErrorMessage(error);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
   minutesForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!pendingCompletion) return;
@@ -421,15 +454,23 @@ export function dashboardScreen() {
     minutesStatus.textContent = '';
 
     try {
-      await setHabitCompletion(
-        auth.currentUser,
-        completion.habit,
-        completion.date,
-        minutesForm.elements.minutes.value,
-      );
+      if (completion.log) {
+        await updateHabitCompletion(auth.currentUser, completion.habit, completion.date, {
+          actualMinutes: minutesForm.elements.minutes.value,
+          note: minutesForm.elements.note.value,
+        });
+      } else {
+        await setHabitCompletion(
+          auth.currentUser,
+          completion.habit,
+          completion.date,
+          minutesForm.elements.minutes.value,
+          minutesForm.elements.note.value,
+        );
+      }
       minutesDialog.close();
       const snapshot = await loadMonth({ refreshProfile: true });
-      showCompletionFeedback(completion, snapshot);
+      if (!completion.log) showCompletionFeedback(completion, snapshot);
     } catch (error) {
       minutesStatus.textContent = getAuthErrorMessage(error);
     } finally {

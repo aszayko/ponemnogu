@@ -3,10 +3,13 @@ import {
   BookOpen,
   CalendarDays,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
   Droplet,
   Dumbbell,
   GraduationCap,
   Heart,
+  History,
   Languages,
   Moon,
   Pencil,
@@ -17,6 +20,11 @@ import {
 import { createAppShell } from '../components/appShell.js';
 import { auth, getAuthErrorMessage } from '../firebase/auth.js';
 import { getHabitStage } from '../logic/habitStrength.js';
+import {
+  formatCalendarDate,
+  formatMonthTitle,
+  getMonthRange,
+} from '../logic/dates.js';
 import { formatGoal, formatSchedule, WEEK_DAYS } from '../logic/schedules.js';
 import {
   archiveHabit,
@@ -24,6 +32,7 @@ import {
   getActiveHabits,
   updateHabit,
 } from '../services/habitService.js';
+import { getHabitLogsForRange } from '../services/logService.js';
 
 const habitIconOptions = [
   { id: 'check-circle-2', label: 'Действие', icon: CheckCircle2 },
@@ -90,6 +99,9 @@ function habitCardMarkup(habit) {
       <div class="habit-card__topline">
         <span class="habit-card__icon">${iconMarkup(icon.icon, 'habit-icon')}</span>
         <div class="habit-card__actions">
+          <button type="button" data-habit-history="${escapeHtml(habit.id)}" aria-label="История привычки ${escapeHtml(habit.name)}" title="История">
+            ${iconMarkup(History, 'habit-action-icon')}
+          </button>
           <button type="button" data-edit-habit="${escapeHtml(habit.id)}" aria-label="Редактировать привычку ${escapeHtml(habit.name)}" title="Редактировать">
             ${iconMarkup(Pencil, 'habit-action-icon')}
           </button>
@@ -228,6 +240,31 @@ function screenMarkup() {
         </div>
       </section>
     </dialog>
+
+    <dialog class="habit-dialog habit-history-dialog" data-history-dialog>
+      <section>
+        <header class="habit-dialog__header habit-history-dialog__header">
+          <div>
+            <p class="eyebrow">История привычки</p>
+            <h2 data-history-habit-name></h2>
+          </div>
+          <button type="button" class="habit-dialog__close" data-close-history-dialog aria-label="Закрыть">
+            ${iconMarkup(X, 'habit-action-icon')}
+          </button>
+        </header>
+        <div class="habit-history-month" aria-label="Выбор месяца">
+          <button type="button" data-history-previous-month aria-label="Предыдущий месяц">
+            ${iconMarkup(ChevronLeft, 'habit-history-control-icon')}
+          </button>
+          <strong data-history-month aria-live="polite"></strong>
+          <button type="button" data-history-next-month aria-label="Следующий месяц">
+            ${iconMarkup(ChevronRight, 'habit-history-control-icon')}
+          </button>
+        </div>
+        <p class="form-status habit-history-status" data-history-status role="status" aria-live="polite"></p>
+        <div class="habit-history-list" data-history-list></div>
+      </section>
+    </dialog>
   `;
 }
 
@@ -240,12 +277,16 @@ export function habitsScreen() {
   const status = page.querySelector('[data-habits-status]');
   const editorDialog = page.querySelector('[data-habit-dialog]');
   const archiveDialog = page.querySelector('[data-archive-dialog]');
+  const historyDialog = page.querySelector('[data-history-dialog]');
   const form = page.querySelector('[data-habit-form]');
   const formStatus = page.querySelector('[data-habit-form-status]');
   const archiveStatus = page.querySelector('[data-archive-status]');
   let habits = [];
   let editingHabitId = null;
   let archivingHabitId = null;
+  let historyHabitId = null;
+  let historyMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  let historyLoadVersion = 0;
 
   function setStatus(message, type = '') {
     status.textContent = message;
@@ -272,6 +313,9 @@ export function habitsScreen() {
     });
     content.querySelectorAll('[data-archive-habit]').forEach((button) => {
       button.addEventListener('click', () => openArchiveDialog(button.dataset.archiveHabit));
+    });
+    content.querySelectorAll('[data-habit-history]').forEach((button) => {
+      button.addEventListener('click', () => openHistoryDialog(button.dataset.habitHistory));
     });
   }
 
@@ -341,6 +385,80 @@ export function habitsScreen() {
     archiveDialog.showModal();
   }
 
+  function renderHistoryEntries(logs) {
+    const completedLogs = logs
+      .filter((log) => log.habitId === historyHabitId && log.completed === true)
+      .sort((left, right) => right.date.localeCompare(left.date));
+    const historyList = page.querySelector('[data-history-list]');
+
+    if (!completedLogs.length) {
+      historyList.innerHTML = `
+        <div class="habit-history-empty">
+          ${iconMarkup(CalendarDays, 'habit-history-empty__icon')}
+          <strong>В этом месяце записей нет</strong>
+          <span>Выполненные дни появятся здесь.</span>
+        </div>
+      `;
+      return;
+    }
+
+    historyList.innerHTML = completedLogs.map((log) => {
+      const minutes = Number(log.actualMinutes);
+      const meta = Number.isFinite(minutes) && minutes > 0
+        ? `${formatCalendarDate(log.date)} · ${minutes} мин`
+        : formatCalendarDate(log.date);
+      const note = typeof log.note === 'string' ? log.note.trim() : '';
+
+      return `
+        <article class="habit-history-entry">
+          <strong>${escapeHtml(meta)}</strong>
+          ${note ? `<p>${escapeHtml(note)}</p>` : ''}
+        </article>
+      `;
+    }).join('');
+  }
+
+  async function loadHistory() {
+    if (!historyHabitId) return;
+
+    const requestVersion = ++historyLoadVersion;
+    const range = getMonthRange(historyMonth);
+    page.querySelector('[data-history-month]').textContent = formatMonthTitle(historyMonth);
+    page.querySelector('[data-history-status]').textContent = 'Загружаем историю…';
+    page.querySelector('[data-history-list]').replaceChildren();
+
+    try {
+      const logs = await getHabitLogsForRange(auth.currentUser, range.startDate, range.endDate);
+      if (requestVersion !== historyLoadVersion) return;
+      page.querySelector('[data-history-status]').textContent = '';
+      renderHistoryEntries(logs);
+    } catch (error) {
+      if (requestVersion !== historyLoadVersion) return;
+      page.querySelector('[data-history-status]').textContent = getAuthErrorMessage(error);
+    }
+  }
+
+  function openHistoryDialog(habitId) {
+    const habit = habits.find(({ id }) => id === habitId);
+    if (!habit) return;
+
+    const now = new Date();
+    historyHabitId = habit.id;
+    historyMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    page.querySelector('[data-history-habit-name]').textContent = habit.name;
+    historyDialog.showModal();
+    loadHistory();
+  }
+
+  function changeHistoryMonth(offset) {
+    historyMonth = new Date(
+      historyMonth.getFullYear(),
+      historyMonth.getMonth() + offset,
+      1,
+    );
+    loadHistory();
+  }
+
   page.querySelector('[data-new-habit]').addEventListener('click', openCreateDialog);
   form.querySelectorAll('[name="scheduleType"], [name="goalType"]').forEach((input) => {
     input.addEventListener('change', syncConditionalFields);
@@ -351,11 +469,21 @@ export function habitsScreen() {
   page.querySelectorAll('[data-close-archive-dialog]').forEach((button) => {
     button.addEventListener('click', () => archiveDialog.close());
   });
+  page.querySelectorAll('[data-close-history-dialog]').forEach((button) => {
+    button.addEventListener('click', () => historyDialog.close());
+  });
+  page.querySelector('[data-history-previous-month]').addEventListener('click', () => changeHistoryMonth(-1));
+  page.querySelector('[data-history-next-month]').addEventListener('click', () => changeHistoryMonth(1));
 
-  [editorDialog, archiveDialog].forEach((dialog) => {
+  [editorDialog, archiveDialog, historyDialog].forEach((dialog) => {
     dialog.addEventListener('click', (event) => {
       if (event.target === dialog) dialog.close();
     });
+  });
+
+  historyDialog.addEventListener('close', () => {
+    historyHabitId = null;
+    historyLoadVersion += 1;
   });
 
   form.addEventListener('submit', async (event) => {

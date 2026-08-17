@@ -447,8 +447,12 @@
 .practice-minutes-input input { width: 100%; min-height: 54px; padding: 12px 58px 12px 15px; border: 1px solid var(--line); border-radius: var(--radius-sm); outline: 0; color: var(--text); text-align: center; }
 .practice-minutes-input input:focus { border-color: var(--purple); box-shadow: 0 0 0 4px var(--purple-soft); }
 .practice-minutes-input small { position: absolute; top: 50%; right: 15px; color: var(--muted); transform: translateY(-50%); }
+.practice-note-field { display: grid; gap: 9px; color: var(--text); font-size: .9rem; font-weight: 800; }
+.practice-note-field textarea { width: 100%; min-height: 96px; resize: vertical; padding: 13px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); outline: 0; color: var(--text); line-height: 1.45; }
+.practice-note-field textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 4px var(--purple-soft); }
 .practice-dialog__actions { display: flex; justify-content: flex-end; gap: 10px; }
 .practice-button--secondary { border: 1px solid var(--line); background: var(--surface); }
+.practice-button--remove { margin-right: auto; border: 1px solid rgb(190 62 79 / 24%); background: #fff4f5; color: #a53b49; }
 
 @media (max-width: 1120px) {
   .dashboard-page { grid-template-columns: clamp(205px, 22vw, 225px) minmax(0, 1fr); }
@@ -509,4 +513,5 @@
   .sidebar-nav a { flex-direction: column; gap: 2px; font-size: .61rem; }
   .practice-dialog__actions { flex-direction: column-reverse; }
   .practice-dialog__actions .button { width: 100%; }
+  .practice-button--remove { margin-top: 6px; }
 }

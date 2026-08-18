@@ -103,23 +103,25 @@ function screenMarkup() {
             ${iconMarkup(X, 'practice-action-icon')}
           </button>
         </header>
-        <p class="practice-dialog__context" data-minutes-context></p>
-        <label class="practice-minutes-field" data-minutes-field>
-          <span>Фактическое время</span>
-          <span class="practice-stepper">
-            <button type="button" data-adjust-minutes="-5" aria-label="Уменьшить на 5 минут">${iconMarkup(Minus, 'practice-stepper__icon')}</button>
-            <span class="practice-minutes-input">
-              <input type="number" name="minutes" min="1" step="1" inputmode="numeric" />
-              <small>мин</small>
+        <div class="practice-dialog__body">
+          <p class="practice-dialog__context" data-minutes-context></p>
+          <label class="practice-minutes-field" data-minutes-field>
+            <span>Фактическое время</span>
+            <span class="practice-stepper">
+              <button type="button" data-adjust-minutes="-5" aria-label="Уменьшить на 5 минут">${iconMarkup(Minus, 'practice-stepper__icon')}</button>
+              <span class="practice-minutes-input">
+                <input type="number" name="minutes" min="1" step="1" inputmode="numeric" />
+                <small>мин</small>
+              </span>
+              <button type="button" data-adjust-minutes="5" aria-label="Увеличить на 5 минут">${iconMarkup(Plus, 'practice-stepper__icon')}</button>
             </span>
-            <button type="button" data-adjust-minutes="5" aria-label="Увеличить на 5 минут">${iconMarkup(Plus, 'practice-stepper__icon')}</button>
-          </span>
-        </label>
-        <label class="practice-note-field">
-          <span>Заметка — необязательно</span>
-          <textarea name="note" rows="4" maxlength="1000" placeholder="Что хочется запомнить?"></textarea>
-        </label>
-        <p class="form-status" data-minutes-status role="status" aria-live="polite"></p>
+          </label>
+          <label class="practice-note-field">
+            <span>Заметка — необязательно</span>
+            <textarea name="note" rows="4" maxlength="1000" placeholder="Что хочется запомнить?"></textarea>
+          </label>
+          <p class="form-status" data-minutes-status role="status" aria-live="polite"></p>
+        </div>
         <div class="practice-dialog__actions">
           <button class="button practice-button--remove" type="button" data-remove-completion hidden>Снять отметку</button>
           <button class="button practice-button--secondary" type="button" data-close-minutes-dialog>Отмена</button>

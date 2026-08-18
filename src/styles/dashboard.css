@@ -611,6 +611,7 @@
 
 .practice-dialog::backdrop { background: rgb(24 32 51 / 42%); backdrop-filter: blur(4px); }
 .practice-form { display: grid; gap: 22px; padding: clamp(24px, 5vw, 36px); }
+.practice-dialog__body { display: contents; }
 .practice-dialog__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .practice-dialog__header h2 { margin: 5px 0 0; font-size: 1.7rem; letter-spacing: -.025em; }
 .practice-dialog__close {

@@ -98,13 +98,13 @@ function screenMarkup() {
           <div>
             <p class="eyebrow">Практика</p>
             <h2 data-practice-dialog-title>Сколько получилось?</h2>
+            <p class="practice-dialog__context" data-minutes-context></p>
           </div>
           <button type="button" class="practice-dialog__close" data-close-minutes-dialog aria-label="Закрыть">
             ${iconMarkup(X, 'practice-action-icon')}
           </button>
         </header>
         <div class="practice-dialog__body">
-          <p class="practice-dialog__context" data-minutes-context></p>
           <label class="practice-minutes-field" data-minutes-field>
             <span>Фактическое время</span>
             <span class="practice-stepper">

@@ -630,7 +630,7 @@
 
 .practice-dialog__close:hover { border-color: var(--line); background: var(--bg); }
 .practice-action-icon { width: 18px; height: 18px; }
-.practice-dialog__context { margin: -10px 0 0; color: var(--muted); line-height: 1.5; }
+.practice-dialog__context { margin: 12px 0 0; color: var(--muted); line-height: 1.5; }
 .practice-minutes-field { display: grid; gap: 10px; font-size: .9rem; font-weight: 800; }
 .practice-stepper { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 8px; }
 .practice-stepper > button { display: grid; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--purple-soft); color: var(--purple); cursor: pointer; }

@@ -408,6 +408,17 @@
     padding: 22px 18px;
     overflow: hidden;
   }
+  .practice-dialog__header {
+    height: auto;
+    flex-shrink: 0;
+    overflow: visible;
+  }
+  .practice-dialog__header > div { min-width: 0; overflow: visible; }
+  .practice-dialog__context {
+    margin: 7px 0 0;
+    overflow: visible;
+    line-height: 1.4;
+  }
   .practice-dialog__body {
     display: grid;
     min-height: 0;
